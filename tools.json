@@ -1,0 +1,12 @@
+{
+  "functions": [
+    {
+      "function": "convert_to_pdf",
+      "description": "Converts a given file to PDF format."
+    },
+    {
+      "function": "send_email",
+      "description": "Sends an email with the specified content and attachments."
+    }
+  ]
+}

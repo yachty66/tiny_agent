@@ -1,11 +1,11 @@
 """
-the plan is that it should be possible for someone to instantiate a sample agent
+- [ ] enable planning
+- [ ] create class which contains all the functions 
 
-the input is always a question of the user first. like convert me the file to pdf
+- if the model is not able to find a certain function than it will just return that it didnt found a certain function 
 
-i started building the agent from scratch lets see where i land. this is going to be good
 """
-
+import json
 import os
 from openai import OpenAI
 from dotenv import load_dotenv
@@ -51,13 +51,20 @@ class PlannerAgent:
         self.plan = self.generate_plan()
         self.steps = self.extract_plan()
 
+    def get_tools(self):
+        with open("tools.json", "r") as file:
+            tools = json.load(file)
+        return tools
+
     def generate_plan(self):
         prompt = f"""
         You are a helpful assistant. Your goal is to create a plan with clear steps on how to get the task done that is given to you. Here is the task:
 
         {self.user_input}
 
-        Please provide a plan:
+        You can only answer with the plan if the task can be done with the functions available in {self.get_tools()}. If you find a function, return the plan; otherwise, return "I am sorry, but I don't have a brain for this."
+
+        Please provide a plan or "I am sorry, but I don't have a brain for this":
         """
         messages = [
             {
@@ -82,6 +89,8 @@ class PlannerAgent:
         "Step 2",
         "Step 3"
         ]
+
+        If there is no plan, just return an empty list.
 
         ONLY return the list and nothing else.
         """
